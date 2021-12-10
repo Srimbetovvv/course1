@@ -1,0 +1,14 @@
+main img.main_img {
+    width: 100%;
+    border-radius: 5px;
+    border: solid 'yellow';
+}
+
+main div.btn-group {
+    width: 100%;
+
+}
+
+main a.btn-primary {
+    font-size: 1.3em;
+}

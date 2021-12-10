@@ -1,0 +1,40 @@
+package com.iskalay.controllers;
+
+import com.iskalay.models.Users;
+import com.iskalay.repo.RepoComments;
+import com.iskalay.repo.RepoBooks;
+import com.iskalay.repo.RepoUsers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public class Main {
+
+    @Autowired
+    RepoUsers repoUsers;
+
+    @Autowired
+    RepoBooks repoBooks;
+
+    @Autowired
+    RepoComments repoComments;
+
+    @Value("${upload.path}")
+    String uploadPath;
+
+    String checkUserRole() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if ((!(auth instanceof AnonymousAuthenticationToken)) && auth != null) {
+            UserDetails userDetail = (UserDetails) auth.getPrincipal();
+            if (userDetail != null) {
+                Users userFromDB = repoUsers.findByUsername(userDetail.getUsername());
+                return String.valueOf(userFromDB.getRole());
+            }
+            return "NOT";
+        }
+        return "NOT";
+    }
+}
