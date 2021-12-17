@@ -23,11 +23,6 @@
                        required th:value="${book.name}">
             </div>
             <div class="col-lg-6 size-150">
-                <div class=" input-group">
-                    <label for="pub" class="input-group-text">Издатель</label>
-                    <input id="pub" name="pub" type="text" class="form-control"
-                           placeholder="Издатель" required th:value="${book.pub}">
-                </div>
                 <div class="input-group">
                     <label for="author" class="input-group-text">Автор</label>
                     <input id="author" name="author" type="text" class="form-control" placeholder="Автор"
@@ -76,6 +71,15 @@
                         <option value="Психология">Психология</option>
                         <option value="Саморазвитие">Саморазвитие</option>
                         <option value="Боевики">Боевики</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6 size-150">
+                <div class="input-group">
+                    <label for="pub" class="input-group-text">Издательство</label>
+                    <select id="pub" name="pub" class="form-control">
+                        <option value="fourquarters">fourquarters</option>
+                        <option value="popurri">popurri</option>
                     </select>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 package com.iskalay.controllers;
 
-import com.iskalay.models.Books;
+import com.iskalay.models.BookStat;
 import com.iskalay.models.Users;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,12 +25,12 @@ public class SalesCont extends Main {
             if (userDetail != null) userFromDB = repoUsers.findByUsername(userDetail.getUsername());
         }
 
-        List<Books> books = repoBooks.findAllByUserid(userFromDB.getId());
+        List<BookStat> bookStatList = repoBookStat.findAllByUserid(userFromDB.getId());
         float income = 0;
-        for (Books g : books) income += g.getIncome();
+        for (BookStat g : bookStatList) income += g.getIncome();
 
         model.addAttribute("income", income);
-        model.addAttribute("books", books);
+        model.addAttribute("books", bookStatList);
         model.addAttribute("role", checkUserRole());
         return "sales";
     }

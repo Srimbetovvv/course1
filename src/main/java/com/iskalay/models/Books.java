@@ -32,9 +32,6 @@ public class Books {
 
     private Genre genre;
 
-    private int count;
-    private float income;
-
     public Books() {
     }
 
@@ -126,22 +123,6 @@ public class Books {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public float getIncome() {
-        return income;
-    }
-
-    public void setIncome(float income) {
-        this.income = income;
     }
 
     public String getAuthor() {

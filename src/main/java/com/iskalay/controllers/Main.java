@@ -1,6 +1,8 @@
 package com.iskalay.controllers;
 
+import com.iskalay.models.Books;
 import com.iskalay.models.Users;
+import com.iskalay.repo.RepoBookStat;
 import com.iskalay.repo.RepoComments;
 import com.iskalay.repo.RepoBooks;
 import com.iskalay.repo.RepoUsers;
@@ -10,6 +12,8 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.List;
 
 public class Main {
 
@@ -21,6 +25,9 @@ public class Main {
 
     @Autowired
     RepoComments repoComments;
+
+    @Autowired
+    RepoBookStat repoBookStat;
 
     @Value("${upload.path}")
     String uploadPath;
@@ -36,5 +43,10 @@ public class Main {
             return "NOT";
         }
         return "NOT";
+    }
+
+    long findLastGameId(){
+        List<Books> booksList = repoBooks.findAll();
+        return booksList.get(booksList.size() - 1).getId();
     }
 }

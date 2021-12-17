@@ -1,5 +1,6 @@
 package com.iskalay.controllers;
 
+import com.iskalay.models.BookStat;
 import com.iskalay.models.Books;
 import com.iskalay.models.Users;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -153,14 +154,14 @@ public class CartCont extends Main {
             buy[userFromDB.getBuy().length] = id;
         }
 
-        Optional<Books> temp = repoBooks.findById(id);
-        List<Books> books = new ArrayList<>();
+        Optional<BookStat> temp = repoBookStat.findById(id);
+        List<BookStat> books = new ArrayList<>();
         temp.ifPresent(books::add);
 
-        for (Books g : books) {
+        for (BookStat g : books) {
             g.setCount(g.getCount() + 1);
             g.setIncome(g.getIncome() + g.getPrice());
-            repoBooks.save(g);
+            repoBookStat.save(g);
             break;
         }
 
@@ -193,13 +194,13 @@ public class CartCont extends Main {
                 }
                 for (int j = 0; j < userFromDB.getCart().length; j++) {
                     buy[i] = userFromDB.getCart()[j];
-                    Optional<Books> temp = repoBooks.findById(userFromDB.getCart()[j]);
-                    List<Books> books = new ArrayList<>();
+                    Optional<BookStat> temp = repoBookStat.findById(userFromDB.getCart()[j]);
+                    List<BookStat> books = new ArrayList<>();
                     temp.ifPresent(books::add);
-                    for (Books g : books) {
+                    for (BookStat g : books) {
                         g.setCount(g.getCount() + 1);
                         g.setIncome(g.getIncome() + g.getPrice());
-                        repoBooks.save(g);
+                        repoBookStat.save(g);
                         break;
                     }
                     i++;

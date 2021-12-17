@@ -5,6 +5,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="nav-link px-2 text-dark">Главная</a></li>
                     <li><a href="/catalog/all" class="nav-link px-2 text-dark">Каталог</a></li>
+                    <li><a href="/publisher" class="nav-link px-2 text-dark">Издательства</a></li>
                     <li><a href="/about" class="nav-link px-2 text-dark">О нас</a></li>
                     <li th:if="${role == 'ADMIN' || role == 'PUB'}">
                         <a href="/book/add" class="nav-link px-2 text-dark">Добавить книгу</a>

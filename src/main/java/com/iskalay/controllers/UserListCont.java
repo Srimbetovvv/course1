@@ -21,22 +21,8 @@ public class UserListCont extends Main {
 
     @GetMapping("/userList")
     public String userList(Model model) {
-        Users userFromDB = new Users();
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if ((!(auth instanceof AnonymousAuthenticationToken)) && auth != null) {
-            UserDetails userDetail = (UserDetails) auth.getPrincipal();
-            if (userDetail != null) userFromDB = repoUsers.findByUsername(userDetail.getUsername());
-        }
-
-        List<Books> books = repoBooks.findAllByUserid(userFromDB.getId());
-        float income = 0;
-        for (Books g : books) income += g.getIncome();
-
         List<Users> users = repoUsers.findAll();
 
-        model.addAttribute("income", income);
-        model.addAttribute("books", books);
         model.addAttribute("users", users);
         model.addAttribute("role", checkUserRole());
         return "userList";
@@ -44,7 +30,7 @@ public class UserListCont extends Main {
 
     @PostMapping("/userList/{id}/edit")
     public String userUpdate(
-            @PathVariable(value = "id") Long id,@RequestParam String username,
+            @PathVariable(value = "id") Long id, @RequestParam String username,
             @RequestParam String password, @RequestParam Role role
     ) {
         Users temp = repoUsers.findById(id).orElseThrow();

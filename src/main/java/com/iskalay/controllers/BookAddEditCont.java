@@ -2,6 +2,7 @@ package com.iskalay.controllers;
 
 import com.iskalay.models.*;
 import com.iskalay.models.enums.Genre;
+import com.iskalay.models.enums.Pub;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,12 +34,13 @@ public class BookAddEditCont extends Main {
     @PostMapping("book/add")
     public String add(
             @RequestParam String name, @RequestParam("poster") MultipartFile poster,
-            @RequestParam("screenshots") MultipartFile[] screenshots, @RequestParam String pub,
+            @RequestParam("screenshots") MultipartFile[] screenshots, @RequestParam Pub pub,
             @RequestParam String author, @RequestParam String isbn,
             @RequestParam int year, @RequestParam float price, @RequestParam float weight, @RequestParam Genre genre,
             @RequestParam String[] description
     ) throws IOException {
-        Books newBooks = new Books(name, author, pub, isbn, year, price, weight, genre);
+        Books newBooks = new Books(name, author, pub.toString(), isbn, year, price, weight, genre);
+        BookStat bookStat = new BookStat(name, price);
 
         StringBuilder des = new StringBuilder();
         for (String s : description) des.append(s);
@@ -71,10 +73,17 @@ public class BookAddEditCont extends Main {
             if (userDetail != null) {
                 Users userFromDB = repoUsers.findByUsername(userDetail.getUsername());
                 newBooks.setUserid(userFromDB.getId());
+                bookStat.setUserid(userFromDB.getId());
             }
         }
 
         repoBooks.save(newBooks);
+
+        long i = findLastGameId();
+
+        bookStat.setBookid(i);
+
+        repoBookStat.save(bookStat);
         return "redirect:/catalog/all";
     }
 
@@ -93,22 +102,24 @@ public class BookAddEditCont extends Main {
     public String edit(
             @PathVariable(value = "id") Long id,
             @RequestParam String name, @RequestParam("poster") MultipartFile poster,
-            @RequestParam("screenshots") MultipartFile[] screenshots, @RequestParam String pub,
+            @RequestParam("screenshots") MultipartFile[] screenshots, @RequestParam Pub pub,
             @RequestParam String author, @RequestParam String isbn,
             @RequestParam int year, @RequestParam float price, @RequestParam float weight, @RequestParam Genre genre,
             @RequestParam String[] description
     ) throws IOException {
         Books g = repoBooks.findById(id).orElseThrow();
+        BookStat bookStat = repoBookStat.findById(id).orElseThrow();
         StringBuilder des = new StringBuilder();
         for (String s : description) des.append(s);
 
         g.setDescription(des.toString());
         g.setName(name);
-        g.setPub(pub);
+        g.setPub(pub.toString());
         g.setAuthor(author);
         g.setIsbn(isbn);
         g.setYear(year);
         g.setPrice(price);
+        bookStat.setPrice(price);
         g.setWeight(weight);
         g.setGenre(genre);
         String uuidFile = UUID.randomUUID().toString();
@@ -134,12 +145,14 @@ public class BookAddEditCont extends Main {
         }
 
         repoBooks.save(g);
+        repoBookStat.save(bookStat);
         return "redirect:/book/{id}/";
     }
 
     @GetMapping("/book/{id}/delete")
     public String book_delete(@PathVariable(value = "id") Long id) {
         repoBooks.deleteById(id);
+        repoBookStat.deleteById(id);
         List<Users> users = repoUsers.findAll();
 
         for (Users user : users)

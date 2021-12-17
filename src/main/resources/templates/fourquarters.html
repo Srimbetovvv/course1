@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Издательство - Four quarters</title>
+    <link rel="stylesheet" href="/static/book_style.css">
+</head>
+
+<head th:insert="blocks\head :: head"></head>
+
+<body class="d-flex flex-column h-100" style="">
+
+<header th:insert="blocks\header :: header" class="sticky-top" role="navigation"></header>
+
+<hr class="clear">
+
+<main class="container-lg flex-shrink-0 bg-warning">
+    <div class="row">
+        <div class="col-lg-12 my-3">
+            <h1>Four quarters</h1>
+        </div>
+        <div class="col-lg-4 mb-3">
+            <img class="poster-book" src="/img/fourquarters.jpg">
+        </div>
+        <div class="col-lg-8">
+            <div>
+                <div><b>Дата основания: </b><span>1993</span></div>
+                <div><b>Область издательских интересов: </b><span>культура (мировая, национальная, духовная), наука, образование</span>
+                </div>
+                <div><b>Типы выпускаемых изданий: </b>
+                    <p>литературно-художественные;</p>
+                    <p>духовно-просветительские;</p>
+                    <p>научно-популярные;</p>
+                    <p>научные;</p>
+                    <p>учебные;</p>
+                    <p>производственно-практические;</p>
+                    <p>справочные, рекламные;</p>
+                    <p>массово-политические издания;</p>
+                    <p>издания для досуга.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mt-3">
+            <h4>Описание</h4>
+            <p class="description text-break">
+                Талантливые белорусские литераторы — всегда в центре внимания. Особое
+                место — признанным мастерам слова, а также молодым, начинающим прозаикам и поэтам. Большое внимание
+                всегда уделялось совместным проектам по издательскому сопровождению различного рода мероприятий как
+                международного, так и республиканского уровня, проводимых ежегодно в столице, а также в регионах
+                Беларуси.
+                Рождаются новые оригинальные проекты, направленные на популяризацию культуры. С 2004 года издательство
+                также работает и над учебными изданиями для средней и высшей школы. Укрепляется интерес издательства к
+                переводам на русский и белорусский языки, произведениям иностранных авторов. Выходят в свет переводные
+                издания с английского, французского, польского, немецкого и других языков.
+                Изначально ориентированное на посильное участие в возрождении национальной культуры, пропаганду
+                достижений мировой культуры, издательство сохраняет эту политику.
+                Издательство «Четыре четверти» — сегодня единственная в Республике Беларусь издательская структура,
+                поддерживающая развитие национальной музыкальной культуры.
+                Кроме собственно редакционной работы, на базе выпущенных книг коллектив осуществляет работу,
+                направленную на популяризацию искусства, белорусской литературы, творчества белорусских авторов и
+                деятелей культуры. В творческих проектах издательство объединяет силы литераторов и художников:
+                осуществляются многочисленные презентации, проводятся художественные выставки в библиотеках, школах,
+                музеях, выставочных залах, домах культуры г. Минска и других регионов.
+            </p>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-lg-3" th:each="book : ${books}">
+            <div class="card mb-4 rounded-3 shadow-sm">
+                <a class="book" th:href="'/book/' + ${book.id} + '/'">
+                    <img class="book-photo mb-3" th:attr="src=${'/img/' + book.poster}">
+                    <h4 th:text="${book.name}" class="card-title pricing-card-title mx-3 text-break">Название</h4>
+                </a>
+                <ul class="list-unstyled mt-3 mb-3 mx-3">
+                    <li>Жанр: <a th:text="${book.genre}" th:href="'/catalog/genre/' + ${book.genre}"></a></li>
+                    <li>Дата: <a th:text="${book.year}" th:href="'/catalog/year/' + ${book.year}"></a></li>
+                    <li th:if="${book.price}">Цена: <span th:text="${book.price}"></span> $</li>
+                    <li th:unless="${book.price}">Бесплатно</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="pt-5"></div>
+</main>
+
+<script type="text/javascript" src="/static/book_script.js"></script>
+
+<hr class="clear">
+
+<footer th:insert="blocks/footer :: footer" class="footer mt-auto py-1 "></footer>
+
+</body>
+
+</html>
